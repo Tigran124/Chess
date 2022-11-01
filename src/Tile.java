@@ -1,7 +1,7 @@
 public class Tile extends ChessFigures {
     public Tile() {
         super();
-        imige = 'o';
+        imige = '_';
         isFigure = false;
     }
 

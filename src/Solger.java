@@ -5,7 +5,7 @@ public class Solger extends ChessFigures{
         if (isWhite){
             imige = 's';
         }else {
-            imige = 's';
+            imige = 'S';
         }
         isFigure = true;
         this.isWhite = isWhite;
@@ -16,6 +16,38 @@ public class Solger extends ChessFigures{
     public void calculatePosibleMoove(int i,int j,ChessFigures[][] board) {
         int index = 0;
         if (isWhite) {
+            if (isOnBoard(i + 1,j + 1) && isOponentFigure(isWhite,i + 1,j + 1,board)) {
+                posibleMooves.newPosibleMoove(index, i + 1,j + 1);
+                index++;
+            }
+            if (isOnBoard(i + 1,j - 1) && isOponentFigure(isWhite,i + 1,j - 1,board)) {
+                posibleMooves.newPosibleMoove(index, i + 1,j - 1);
+                index++;
+            }
+        }else {
+            if (isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board)) {
+                posibleMooves.newPosibleMoove(index, i - 1,j + 1);
+                index++;
+            }
+            if (isOnBoard(i - 1,j - 1) && isOponentFigure(isWhite,i - 1,j - 1,board)) {
+                posibleMooves.newPosibleMoove(index, i - 1,j - 1);
+                index++;
+            }
+        }
+    }
+
+    @Override
+    public void calculatePosibleMooveForSolger(int i,int j,ChessFigures[][] board) {
+        int index = 0;
+        if (isWhite) {
+            if (isOnBoard(i + 1,j + 1) && isOponentFigure(isWhite,i + 1,j + 1,board)) {
+                posibleMooves.newPosibleMoove(index, i + 1,j + 1);
+                index++;
+            }
+            if (isOnBoard(i + 1,j - 1) && isOponentFigure(isWhite,i + 1,j - 1,board)) {
+                posibleMooves.newPosibleMoove(index, i + 1,j - 1);
+                index++;
+            }
             if (!board[i + 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i + 1, j);
                 index++;
@@ -25,6 +57,14 @@ public class Solger extends ChessFigures{
                 }
             }
         }else {
+            if (isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board)) {
+                posibleMooves.newPosibleMoove(index, i - 1,j + 1);
+                index++;
+            }
+            if (isOnBoard(i - 1,j - 1) && isOponentFigure(isWhite,i - 1,j - 1,board)) {
+                posibleMooves.newPosibleMoove(index, i - 1,j - 1);
+                index++;
+            }
             if (!board[i - 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i - 1, j);
                 index++;
@@ -53,5 +93,9 @@ public class Solger extends ChessFigures{
     @Override
     public void printeChoosen() {
         System.out.print("*"+imige+"*");
+    }
+
+    private boolean isOnBoard(int i,int j){
+        return (i <= 7 && i >= 0) && (j <= 7 && j >= 0);
     }
 }

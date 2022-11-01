@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 public class PlayChess {
-    boolean gameEnd = true;
+    boolean gameContinue = true;
     Scanner scanner = new Scanner(System.in);
     ChessFigures [][] board = new  ChessFigures [8][8];
     public void play() {
         fullBoard();
-        while (gameEnd)  {
+        while (gameContinue)  {
             printBoard();
             calculateAllPosibleMooves();
             System.out.println("chose figure");
@@ -36,10 +36,12 @@ public class PlayChess {
                 board[i][j] = new Tile();
             }
         }
-        board[0][0] = new Queen(true);
+        board[2][2] = new King(true);
+        board[0][0] = new Solger(true);
+        board[1][1] = new Solger(false);
         board[0][2] = new Knight(true);
         board[0][3] = new Rook(true);
-        board[0][4] = new Solger(true);
+        board[0][4] = new Queen(true);
         board[0][5] = new Bishop(true);
         board[7][7] = new Rook(false);
     }
@@ -67,8 +69,14 @@ public class PlayChess {
     }
 
     public void toChooseFigure(int i,int j,ChessFigures[][] board) {
-        board[i][j].calculatePosibleMoove(i,j,board);
-        printChoosen(i,j);
+        if(board[i][j].imige == 's' || board[i][j].imige == 'S'){
+            board[i][j].posibleMooves = new PosibleMoove();
+            board[i][j].calculatePosibleMooveForSolger(i, j, board);
+            printChoosen(i, j);
+        }else {
+            board[i][j].calculatePosibleMoove(i, j, board);
+            printChoosen(i, j);
+        }
     }
 
     public void toMoove(int i,int j,int x,int y,ChessFigures[][] board) {
