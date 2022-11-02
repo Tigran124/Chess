@@ -62,6 +62,7 @@ public class Rook extends ChessFigures{
                 break;
             }
         }
+        this.posibleMooveCount = index;
     }
 
     @Override

@@ -24,6 +24,7 @@ public class Solger extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i + 1,j - 1);
                 index++;
             }
+            this.posibleMooveCount = index;
         }else {
             if (isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board)) {
                 posibleMooves.newPosibleMoove(index, i - 1,j + 1);
@@ -33,6 +34,7 @@ public class Solger extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i - 1,j - 1);
                 index++;
             }
+            this.posibleMooveCount = index;
         }
     }
 

@@ -110,6 +110,7 @@ public class Queen extends ChessFigures{
                 break;
             }
         }
+        this.posibleMooveCount = index;
     }
 
     @Override

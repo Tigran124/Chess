@@ -46,6 +46,7 @@ public class Knight extends ChessFigures{
             posibleMooves.newPosibleMoove(index, i - 2, j - 1);
             index++;
         }
+        this.posibleMooveCount = index;
     }
 
     @Override

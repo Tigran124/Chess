@@ -2,6 +2,7 @@ public abstract class ChessFigures {
      char imige;
      boolean isFigure;
      boolean isWhite;
+     int posibleMooveCount;
      PosibleMoove posibleMooves;
 
      public ChessFigures(){}

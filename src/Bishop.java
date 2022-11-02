@@ -62,6 +62,7 @@ public class Bishop extends ChessFigures{
                 break;
             }
         }
+        this.posibleMooveCount = index;
     }
 
     @Override

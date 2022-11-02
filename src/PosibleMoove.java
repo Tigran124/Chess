@@ -45,4 +45,14 @@ public class PosibleMoove {
         this.cordinatesI = largerCodinateI;
         this.cordinatesJ = largerCodinateJ;
     }
+
+
+    public boolean canAttakTile (int x,int y,int mooveCount) {
+        for (int i = 0; i < mooveCount; i++) {
+            if (cordinatesI[i] == x && cordinatesJ[i] ==y){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -14,38 +14,55 @@ public class King extends ChessFigures{
     @Override
     public void calculatePosibleMoove(int i, int j, ChessFigures[][] board) {
         int index = 0;
-        if(isOnBoard(i + 1,j + 1) && (isOponentFigure(isWhite,i + 1,j + 1,board) || !board[i + 1][j + 1].isFigure)) {
-            posibleMooves.newPosibleMoove(index,i + 1,j + 1);
-            index++;
+        if(isOnBoard(i + 1,j + 1)) {
+            if (isOponentFigure(isWhite,i + 1,j + 1,board) || !board[i + 1][j + 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i + 1, j + 1);
+                index++;
+            }
         }
-        if(isOnBoard(i,j + 1) && isOponentFigure(isWhite,i,j + 1,board) || !board[i][j + 1].isFigure) {
-            posibleMooves.newPosibleMoove(index,i,j + 1);
-            index++;
+        if(isOnBoard(i,j + 1)) {
+            if (isOponentFigure(isWhite,i,j + 1,board) || !board[i][j + 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i, j + 1);
+                index++;
+            }
         }
-        if(isOnBoard(i + 1,j) && isOponentFigure(isWhite,i + 1,j,board) || !board[i + 1][j].isFigure) {
-            posibleMooves.newPosibleMoove(index, i + 1,j);
-            index++;
+        if(isOnBoard(i + 1,j)) {
+            if (isOponentFigure(isWhite,i + 1,j,board) || !board[i + 1][j].isFigure) {
+                posibleMooves.newPosibleMoove(index, i + 1, j);
+                index++;
+            }
         }
-        if(isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board) || !board[i - 1][j + 1].isFigure) {
-            posibleMooves.newPosibleMoove(index,i - 1,j + 1);
-            index++;
+        if(isOnBoard(i - 1,j + 1)) {
+            if (isOponentFigure(isWhite,i - 1,j + 1,board) || !board[i - 1][j + 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i - 1, j + 1);
+                index++;
+            }
         }
-        if(isOnBoard(i,j - 1) && isOponentFigure(isWhite,i,j - 1,board) || !board[i][j - 1].isFigure) {
-            posibleMooves.newPosibleMoove(index,i,j - 1);
-            index++;
+        if(isOnBoard(i,j - 1)) {
+            if (isOponentFigure(isWhite,i,j - 1,board) || !board[i][j - 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i, j - 1);
+                index++;
+            }
         }
-        if(isOnBoard(i - 1,j) && isOponentFigure(isWhite,i - 1,j,board) || !board[i - 1][j].isFigure) {
-            posibleMooves.newPosibleMoove(index, i - 1,j);
-            index++;
+        if(isOnBoard(i - 1,j)) {
+            if (isOponentFigure(isWhite,i - 1,j,board) || !board[i - 1][j].isFigure) {
+                posibleMooves.newPosibleMoove(index, i - 1, j);
+                index++;
+            }
         }
-        if(isOnBoard(i + 1,j - 1) && isOponentFigure(isWhite,i + 1,j - 1,board) || !board[i + 1][j - 1].isFigure) {
-            posibleMooves.newPosibleMoove(index,i + 1,j - 1);
-            index++;
+        if(isOnBoard(i + 1,j - 1)) {
+            if (isOponentFigure(isWhite,i + 1,j - 1,board) || !board[i + 1][j - 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i + 1, j - 1);
+                index++;
+            }
         }
-        if(isOnBoard(i - 1,j - 1) && isOponentFigure(isWhite,i - 1,j - 1,board) || !board[i - 1][j - 1].isFigure) {
-            posibleMooves.newPosibleMoove(index,i - 1,j - 1);
-            index++;
+        if(isOnBoard(i - 1,j - 1)) {
+            if (isOponentFigure(isWhite,i - 1,j - 1,board) || !board[i - 1][j - 1].isFigure) {
+                posibleMooves.newPosibleMoove(index, i - 1, j - 1);
+                index++;
+            }
         }
+        this.posibleMooveCount = index;
     }
 
     @Override
