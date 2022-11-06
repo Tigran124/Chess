@@ -2,13 +2,11 @@ public class Bishop extends ChessFigures{
 
     public Bishop(boolean isWhite) {
         super();
-        if (isWhite){
-            imige = 'b';
-        }else {
-            imige = 'B';
-        }
+        imigeYourTurn = 'B';
+        imigeOponentTurn = 'b';
         isFigure = true;
         this.isWhite = isWhite;
+        underProtection = false;
         posibleMooves = new PosibleMoove();
     }
     @Override
@@ -22,6 +20,9 @@ public class Bishop extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i + k, j + k);
                 index++;
                 break;
+            }else if (isFrendlyFigure(isWhite,i + k,j + k,board)){
+                board[i + k][j + k].underProtection = true;
+                break;
             }else {
                 break;
             }
@@ -33,6 +34,9 @@ public class Bishop extends ChessFigures{
             }else if (isOponentFigure(isWhite,i + k,j - k,board)){
                 posibleMooves.newPosibleMoove(index, i + k, j - k);
                 index++;
+                break;
+            }else if (isFrendlyFigure(isWhite,i + k,j - k,board)){
+                board[i + k][j - k].underProtection = true;
                 break;
             }else {
                 break;
@@ -46,6 +50,9 @@ public class Bishop extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i - k, j + k);
                 index++;
                 break;
+            }else if (isFrendlyFigure(isWhite,i - k,j + k,board)){
+                board[i - k][j + k].underProtection = true;
+                break;
             }else {
                 break;
             }
@@ -58,11 +65,23 @@ public class Bishop extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i - k, j - k);
                 index++;
                 break;
+            }else if (isFrendlyFigure(isWhite,i - k,j - k,board)){
+                board[i - k][j - k].underProtection = true;
+                break;
             }else {
                 break;
             }
         }
         this.posibleMooveCount = index;
+    }
+
+
+    private boolean isFrendlyFigure(boolean isWhite,int i,int j,ChessFigures[][] board) {
+        if (board[i][j].isFigure){
+            return isWhite == board[i][j].isWhite;
+        }else {
+            return false;
+        }
     }
 
     @Override
@@ -75,12 +94,20 @@ public class Bishop extends ChessFigures{
     }
 
     @Override
-    public void printe() {
-        System.out.print(" "+imige+" ");
+    public void printe(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print(" " + imigeYourTurn + " ");
+        }else {
+            System.out.print(" " + imigeOponentTurn + " ");
+        }
     }
 
     @Override
-    public void printeChoosen() {
-        System.out.print("*"+imige+"*");
+    public void printeChoosen(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print("*" + imigeYourTurn + "*");
+        }else {
+            System.out.print("*" + imigeOponentTurn + "*");
+        }
     }
 }

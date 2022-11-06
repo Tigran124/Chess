@@ -1,18 +1,16 @@
 import java.util.Arrays;
 
 public class PosibleMoove {
-    int[] cordinatesI;
-    int[] cordinatesJ;
+    Integer[] cordinatesI;
+    Integer[] cordinatesJ;
 
     public PosibleMoove() {
-        cordinatesI = new int[8];
-        Arrays.fill(cordinatesI,-1);
-        cordinatesJ = new int[8];
-        Arrays.fill(cordinatesJ,-1);
+        cordinatesI = new Integer[8];
+        cordinatesJ = new Integer[8];
     }
 
     public void newPosibleMoove(int index,int i,int j) {
-        if (cordinatesI[cordinatesI.length - 1] != -1) {
+        if (cordinatesI[cordinatesI.length - 1] != null) {
             enlargeArrey(cordinatesI,cordinatesJ);
         }
         this.cordinatesI[index] = i;
@@ -22,22 +20,20 @@ public class PosibleMoove {
     public boolean isPosible(int i,int j){
         boolean isPosible = false;
         for (int k = 0; k < cordinatesI.length; k++) {
-            if (cordinatesI[k] == i && cordinatesJ[k] ==j) {
-                isPosible = true;
+            if(cordinatesI[k] == null) {
                 break;
             }
-            if(cordinatesI[k] == -1) {
+            if (cordinatesI[k] == i && cordinatesJ[k] == j) {
+                isPosible = true;
                 break;
             }
         }
         return isPosible;
     }
 
-    public void enlargeArrey (int[] cordinatesI,int[] cordinatesJ) {
-        int[] largerCodinateI = new int[cordinatesI.length + 8];
-        int[] largerCodinateJ = new int[cordinatesJ.length + 8];
-        Arrays.fill(largerCodinateI,-1);
-        Arrays.fill(largerCodinateJ,-1);
+    public void enlargeArrey (Integer[] cordinatesI,Integer[] cordinatesJ) {
+        Integer[] largerCodinateI = new Integer[cordinatesI.length + 8];
+        Integer[] largerCodinateJ = new Integer[cordinatesJ.length + 8];
         for (int i = 0; i < cordinatesI.length; i++) {
             largerCodinateI[i] = cordinatesI[i];
             largerCodinateJ[i] = cordinatesJ[i];
@@ -48,8 +44,8 @@ public class PosibleMoove {
 
 
     public boolean canAttakTile (int x,int y,int mooveCount) {
-        for (int i = 0; i < mooveCount; i++) {
-            if (cordinatesI[i] == x && cordinatesJ[i] ==y){
+        for (int i = 0; i < mooveCount && cordinatesI[i] != null; i++) {
+            if (cordinatesI[i] == x && cordinatesJ[i] == y){
                 return true;
             }
         }

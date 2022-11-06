@@ -2,51 +2,90 @@ public class Knight extends ChessFigures{
 
     public Knight(boolean isWhite) {
         super();
-        if (isWhite){
-            imige = 'n';
-        }else {
-            imige = 'N';
-        }
+        imigeYourTurn = 'N';
+        imigeOponentTurn = 'n';
         isFigure = true;
         this.isWhite = isWhite;
+        underProtection = false;
         posibleMooves = new PosibleMoove();
     }
     @Override
     public void calculatePosibleMoove(int i, int j, ChessFigures[][] board) {
         int index = 0;
-        if (isOnBoard(i + 1,j + 2)&&(!board[i + 1][j + 2].isFigure || isOponentFigure(isWhite,i + 1,j + 2,board))) {
-            posibleMooves.newPosibleMoove(index, i + 1, j + 2);
-            index++;
+        if (isOnBoard(i + 1,j + 2)) {
+            if (isFrendlyFigure(isWhite,i + 1,j + 2,board)) {
+                board[i + 1][j + 2].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i + 1, j + 2);
+                index++;
+            }
         }
-        if (isOnBoard(i + 2,j + 1)&&(!board[i + 2][j + 1].isFigure || isOponentFigure(isWhite,i + 2,j + 1,board))) {
-            posibleMooves.newPosibleMoove(index, i + 2, j + 1);
-            index++;
+        if (isOnBoard(i + 2,j + 1)) {
+            if (isFrendlyFigure(isWhite,i + 2,j + 1,board)) {
+                board[i + 2][j + 1].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i + 2, j + 1);
+                index++;
+            }
         }
-        if (isOnBoard(i - 1,j + 2)&&(!board[i - 1][j + 2].isFigure || isOponentFigure(isWhite,i - 1,j + 2,board))) {
-            posibleMooves.newPosibleMoove(index, i - 1, j + 2);
-            index++;
+        if (isOnBoard(i - 1,j + 2)) {
+            if (isFrendlyFigure(isWhite,i - 1,j + 2,board)) {
+                board[i - 1][j + 2].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i - 1, j + 2);
+                index++;
+            }
         }
-        if (isOnBoard(i - 2,j + 1)&&(!board[i - 2][j + 1].isFigure || isOponentFigure(isWhite,i - 2,j + 1,board))) {
-            posibleMooves.newPosibleMoove(index, i - 2, j + 1);
-            index++;
+        if (isOnBoard(i - 2,j + 1)) {
+            if (isFrendlyFigure(isWhite,i - 2,j + 1,board)) {
+                board[i - 2][j + 1].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i - 2, j + 1);
+                index++;
+            }
         }
-        if (isOnBoard(i + 1,j - 2)&&(!board[i + 1][j - 2].isFigure || isOponentFigure(isWhite,i + 1,j - 2,board))) {
-            posibleMooves.newPosibleMoove(index, i + 1, j - 2);
-            index++;
+        if (isOnBoard(i + 1,j - 2)) {
+            if (isFrendlyFigure(isWhite,i + 1,j - 2,board)) {
+                board[i + 1][j - 2].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i + 1, j - 2);
+                index++;
+            }
         }
-        if (isOnBoard(i + 2,j - 1)&&(!board[i + 2][j - 1].isFigure || isOponentFigure(isWhite,i + 2,j - 1,board))) {
-            posibleMooves.newPosibleMoove(index, i + 2, j - 1);
-            index++;
+        if (isOnBoard(i + 2,j - 1)) {
+            if (isFrendlyFigure(isWhite,i + 2,j - 1,board)) {
+                board[i + 2][j - 1].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i + 2, j - 1);
+                index++;
+            }
         }
-        if (isOnBoard(i - 1,j - 2)&&(!board[i - 1][j - 2].isFigure || isOponentFigure(isWhite,i - 1,j - 2,board))) {
-            posibleMooves.newPosibleMoove(index, i - 1, j - 2);
-            index++;
+        if (isOnBoard(i - 1,j - 2)) {
+            if (isFrendlyFigure(isWhite,i - 1,j - 2,board)) {
+                board[i - 1][j - 2].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i - 1, j - 2);
+                index++;
+            }
         }
-        if (isOnBoard(i - 2,j - 1)&&(!board[i - 2][j - 1].isFigure || isOponentFigure(isWhite,i - 2,j - 1,board))) {
-            posibleMooves.newPosibleMoove(index, i - 2, j - 1);
-            index++;
+        if (isOnBoard(i - 2,j - 1)) {
+            if (isFrendlyFigure(isWhite,i - 2,j - 1,board)) {
+                board[i - 2][j - 1].underProtection = true;
+            }else {
+                posibleMooves.newPosibleMoove(index, i - 2, j - 1);
+                index++;
+            }
         }
         this.posibleMooveCount = index;
+    }
+
+
+    private boolean isFrendlyFigure(boolean isWhite,int i,int j,ChessFigures[][] board) {
+        if (board[i][j].isFigure){
+            return isWhite == board[i][j].isWhite;
+        }else {
+            return false;
+        }
     }
 
     @Override
@@ -63,12 +102,20 @@ public class Knight extends ChessFigures{
     }
 
     @Override
-    public void printe() {
-        System.out.print(" "+imige+" ");
+    public void printe(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print(" " + imigeYourTurn + " ");
+        }else {
+            System.out.print(" " + imigeOponentTurn + " ");
+        }
     }
 
     @Override
-    public void printeChoosen() {
-        System.out.print("*"+imige+"*");
+    public void printeChoosen(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print("*" + imigeYourTurn + "*");
+        }else {
+            System.out.print("*" + imigeOponentTurn + "*");
+        }
     }
 }

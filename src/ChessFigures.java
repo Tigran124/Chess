@@ -1,5 +1,7 @@
 public abstract class ChessFigures {
-     char imige;
+     char imigeYourTurn;
+     char imigeOponentTurn;
+     boolean underProtection;
      boolean isFigure;
      boolean isWhite;
      int posibleMooveCount;
@@ -14,7 +16,7 @@ public abstract class ChessFigures {
 
      public abstract boolean isOponentFigure(boolean isWhite,int i,int j,ChessFigures[][] board);
 
-    public abstract void printe();
+    public abstract void printe(boolean whooseTurnIs);
 
-    public abstract void printeChoosen();
+    public abstract void printeChoosen(boolean whooseTurnIs);
 }

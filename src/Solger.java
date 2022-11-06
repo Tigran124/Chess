@@ -2,13 +2,11 @@ public class Solger extends ChessFigures{
 
     public Solger(boolean isWhite) {
         super();
-        if (isWhite){
-            imige = 's';
-        }else {
-            imige = 'S';
-        }
+        imigeYourTurn = 'S';
+        imigeOponentTurn = 's';
         isFigure = true;
         this.isWhite = isWhite;
+        underProtection = false;
         posibleMooves = new PosibleMoove();
     }
 
@@ -16,21 +14,33 @@ public class Solger extends ChessFigures{
     public void calculatePosibleMoove(int i,int j,ChessFigures[][] board) {
         int index = 0;
         if (isWhite) {
-            if (isOnBoard(i + 1,j + 1) && isOponentFigure(isWhite,i + 1,j + 1,board)) {
+            if (isOnBoard(i + 1,j + 1)) {
+                if (isFrendlyFigure(isWhite,i + 1,j + 1,board)) {
+                    board[i + 1][j + 1].underProtection = true;
+                }
                 posibleMooves.newPosibleMoove(index, i + 1,j + 1);
                 index++;
             }
-            if (isOnBoard(i + 1,j - 1) && isOponentFigure(isWhite,i + 1,j - 1,board)) {
+            if (isOnBoard(i + 1,j - 1)) {
+                if (isFrendlyFigure(isWhite,i + 1,j - 1,board)) {
+                    board[i + 1][j - 1].underProtection = true;
+                }
                 posibleMooves.newPosibleMoove(index, i + 1,j - 1);
                 index++;
             }
             this.posibleMooveCount = index;
         }else {
-            if (isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board)) {
+            if (isOnBoard(i - 1,j + 1)) {
+                if (isFrendlyFigure(isWhite,i - 1,j + 1,board)) {
+                    board[i - 1][j + 1].underProtection = true;
+                }
                 posibleMooves.newPosibleMoove(index, i - 1,j + 1);
                 index++;
             }
-            if (isOnBoard(i - 1,j - 1) && isOponentFigure(isWhite,i - 1,j - 1,board)) {
+            if (isOnBoard(i - 1,j - 1)) {
+                if (isFrendlyFigure(isWhite,i - 1,j - 1,board)) {
+                    board[i - 1][j - 1].underProtection = true;
+                }
                 posibleMooves.newPosibleMoove(index, i - 1,j - 1);
                 index++;
             }
@@ -58,6 +68,7 @@ public class Solger extends ChessFigures{
                     index++;
                 }
             }
+            this.posibleMooveCount = index;
         }else {
             if (isOnBoard(i - 1,j + 1) && isOponentFigure(isWhite,i - 1,j + 1,board)) {
                 posibleMooves.newPosibleMoove(index, i - 1,j + 1);
@@ -75,6 +86,15 @@ public class Solger extends ChessFigures{
                     index++;
                 }
             }
+            this.posibleMooveCount = index;
+        }
+    }
+
+    private boolean isFrendlyFigure(boolean isWhite,int i,int j,ChessFigures[][] board) {
+        if (board[i][j].isFigure){
+            return isWhite == board[i][j].isWhite;
+        }else {
+            return false;
         }
     }
 
@@ -88,13 +108,21 @@ public class Solger extends ChessFigures{
     }
 
     @Override
-    public void printe() {
-        System.out.print(" "+imige+" ");
+    public void printe(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print(" " + imigeYourTurn + " ");
+        }else {
+            System.out.print(" " + imigeOponentTurn + " ");
+        }
     }
 
     @Override
-    public void printeChoosen() {
-        System.out.print("*"+imige+"*");
+    public void printeChoosen(boolean whooseTurnIs) {
+        if (whooseTurnIs == isWhite){
+            System.out.print("*" + imigeYourTurn + "*");
+        }else {
+            System.out.print("*" + imigeOponentTurn + "*");
+        }
     }
 
     private boolean isOnBoard(int i,int j){

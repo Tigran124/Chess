@@ -1,7 +1,8 @@
 public class Tile extends ChessFigures {
     public Tile() {
         super();
-        imige = '_';
+        imigeYourTurn = '_';
+        imigeOponentTurn = '_';
         isFigure = false;
     }
 
@@ -15,12 +16,12 @@ public class Tile extends ChessFigures {
     }
 
     @Override
-    public void printe() {
-        System.out.print(" "+imige+" ");
+    public void printe(boolean whooseTurnIs) {
+        System.out.print(" " + imigeOponentTurn + " ");
     }
 
     @Override
-    public void printeChoosen() {
-        System.out.print("*"+imige+"*");
+    public void printeChoosen(boolean whooseTurnIs) {
+        System.out.print("*" + imigeOponentTurn + "*");
     }
 }
