@@ -7,6 +7,7 @@ public class Rook extends ChessFigures{
         isFigure = true;
         this.isWhite = isWhite;
         underProtection = false;
+        dosentMoove = true;
         posibleMooves = new PosibleMoove();
     }
     @Override

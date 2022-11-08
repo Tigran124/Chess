@@ -6,6 +6,7 @@ public class King extends ChessFigures{
         imigeOponentTurn = 'k';
         isFigure = true;
         this.isWhite = isWhite;
+        dosentMoove = true;
         posibleMooves = new PosibleMoove();
     }
     @Override
@@ -15,8 +16,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i + 1,j + 1)) {
             if (isFrendlyFigure(isWhite,i + 1,j + 1,board)) {
                 board[i + 1][j + 1].underProtection = true;
-            }else {
+            }else if(!board[i + 1][j + 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i + 1,j + 1,board)) {
+                    posibleMooves.newPosibleMoove(index, i + 1, j + 1);
+                    index++;
+                }
+            }else {
+                if(!board[i + 1][j + 1].underProtection){
                     posibleMooves.newPosibleMoove(index, i + 1, j + 1);
                     index++;
                 }
@@ -25,8 +31,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i,j + 1)) {
             if (isFrendlyFigure(isWhite,i,j + 1,board)) {
                 board[i][j + 1].underProtection = true;
-            }else {
+            }else if(!board[i][j + 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i,j + 1,board)) {
+                    posibleMooves.newPosibleMoove(index, i, j + 1);
+                    index++;
+                }
+            }else {
+                if(!board[i][j + 1].underProtection){
                     posibleMooves.newPosibleMoove(index, i, j + 1);
                     index++;
                 }
@@ -35,8 +46,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i + 1,j)) {
             if (isFrendlyFigure(isWhite,i + 1,j,board)) {
                 board[i + 1][j].underProtection = true;
-            }else {
+            }else if(!board[i + 1][j].isFigure){
                 if(!tileIsAnderAttak(isWhite,i + 1,j,board)) {
+                    posibleMooves.newPosibleMoove(index, i + 1, j);
+                    index++;
+                }
+            }else {
+                if(!board[i + 1][j].underProtection){
                     posibleMooves.newPosibleMoove(index, i + 1, j);
                     index++;
                 }
@@ -45,8 +61,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i - 1,j + 1)) {
             if (isFrendlyFigure(isWhite,i - 1,j + 1,board)) {
                 board[i - 1][j + 1].underProtection = true;
-            }else {
+            }else if(!board[i - 1][j + 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i - 1,j + 1,board)) {
+                    posibleMooves.newPosibleMoove(index, i - 1, j + 1);
+                    index++;
+                }
+            }else {
+                if(!board[i - 1][j + 1].underProtection){
                     posibleMooves.newPosibleMoove(index, i - 1, j + 1);
                     index++;
                 }
@@ -55,8 +76,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i,j - 1)) {
             if (isFrendlyFigure(isWhite,i,j - 1,board)) {
                 board[i][j - 1].underProtection = true;
-            }else {
+            }else if(!board[i][j - 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i,j - 1,board)) {
+                    posibleMooves.newPosibleMoove(index, i, j - 1);
+                    index++;
+                }
+            }else {
+                if(!board[i][j - 1].underProtection){
                     posibleMooves.newPosibleMoove(index, i, j - 1);
                     index++;
                 }
@@ -65,8 +91,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i - 1,j)) {
             if (isFrendlyFigure(isWhite,i - 1,j,board)) {
                 board[i - 1][j].underProtection = true;
-            }else {
+            }else if(!board[i - 1][j].isFigure){
                 if(!tileIsAnderAttak(isWhite,i - 1,j,board)) {
+                    posibleMooves.newPosibleMoove(index, i - 1, j);
+                    index++;
+                }
+            }else {
+                if(!board[i - 1][j].underProtection){
                     posibleMooves.newPosibleMoove(index, i - 1, j);
                     index++;
                 }
@@ -75,8 +106,13 @@ public class King extends ChessFigures{
         if(isOnBoard(i + 1,j - 1)) {
             if (isFrendlyFigure(isWhite,i + 1,j - 1,board)) {
                 board[i + 1][j - 1].underProtection = true;
-            }else {
+            }else if(!board[i + 1][j - 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i + 1,j - 1,board)) {
+                    posibleMooves.newPosibleMoove(index, i + 1, j - 1);
+                    index++;
+                }
+            }else {
+                if(!board[i + 1][j - 1].underProtection){
                     posibleMooves.newPosibleMoove(index, i + 1, j - 1);
                     index++;
                 }
@@ -85,11 +121,20 @@ public class King extends ChessFigures{
         if(isOnBoard(i - 1,j - 1)) {
             if (isFrendlyFigure(isWhite,i - 1,j - 1,board)) {
                 board[i - 1][j - 1].underProtection = true;
-            }else {
+            }else if(!board[i - 1][j - 1].isFigure){
                 if(!tileIsAnderAttak(isWhite,i - 1,j - 1,board)) {
                     posibleMooves.newPosibleMoove(index, i - 1, j - 1);
                     index++;
                 }
+            }else {
+                if(!board[i - 1][j - 1].underProtection){
+                    posibleMooves.newPosibleMoove(index, i - 1, j - 1);
+                    index++;
+                }
+            }
+        }if (isOnBoard(i,j+3)) {
+            if (castleRight(isWhite, i, j, board)) {
+                posibleMooves.newPosibleMoove(index, i, j + 2);
             }
         }
         this.posibleMooveCount = index;
@@ -145,6 +190,18 @@ public class King extends ChessFigures{
                         }
                     }
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean castleRight(boolean isWhite,int i,int j,ChessFigures[][] board) {
+        if (dosentMoove && board[i][j+3].dosentMoove) {
+            if (!tileIsAnderAttak(isWhite,i,j,board) && !board[i][j + 1].isFigure && !board[i][j + 1].isFigure) {
+                if (!tileIsAnderAttak(isWhite,i,j + 1,board) && !tileIsAnderAttak(isWhite,i,j + 2,board)) {
+                    return true;
+                }
+
             }
         }
         return false;

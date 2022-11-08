@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class PlayChess {
     boolean gameContinue = true;
     boolean whooseTurnIs = true;
-    int whiteKingI = -2;
-    int whiteKingJ = -2;
-    int blackKingI = 0;
-    int blackKingJ = 0;
+    int whiteKingI = 0;
+    int whiteKingJ = 4;
+    int blackKingI = 7;
+    int blackKingJ = 4;
     Scanner scanner = new Scanner(System.in);
     ChessFigures [][] board = new  ChessFigures [8][8];
     public void play() {
@@ -15,7 +15,7 @@ public class PlayChess {
         while (gameContinue)  {
             whooseTurnIs = (turn % 2) == 0;
             printBoard(whooseTurnIs);
-            calculatePosibleMooves();
+            calculatePosibleMooves(!whooseTurnIs);
             check(whooseTurnIs);
             System.out.println("chose figure");
             int i = isValid(scanner.nextInt());
@@ -39,7 +39,8 @@ public class PlayChess {
                 y = isValid(scanner.nextInt());
             }
             toMoove(i,j,x,y,board);
-            calculatePosibleMooves();
+            clearPosibleMoove();
+            calculatePosibleMooves(!whooseTurnIs);
             if (check(whooseTurnIs)) {
                 if (whooseTurnIs) {
                     System.out.println("White loose");
@@ -49,6 +50,7 @@ public class PlayChess {
                 this.gameContinue = false;
             }
             clearPosibleMoove();
+            clearOtherParametrs(!whooseTurnIs);
             turn ++;
         }
     }
@@ -58,8 +60,9 @@ public class PlayChess {
                 board[i][j] = new Tile();
             }
         }
-        board[0][0] = new King(false);
-        board[7][7] = new Rook(true);
+        board[0][4] = new King(true);
+        board[0][7] = new Rook(true);
+        board[7][4] = new King(false);
     }
 
     public void printBoard(boolean whooseTurnIs) {
@@ -96,22 +99,33 @@ public class PlayChess {
     }
 
     public void toMoove(int i,int j,int x,int y,ChessFigures[][] board) {
-        if(i == whiteKingI && j == whiteKingJ){
-            this.whiteKingI = x;
-            this.whiteKingJ = y;
+        if (board[i][j]instanceof King){
+            kingIsMooving(i,j,x,y);
         }
-        if (i == blackKingI && j == blackKingJ){
-            this.blackKingI = x;
-            this.blackKingJ = y;
+        if (board[i][j]instanceof Rook && board[i][j].dosentMoove) {
+            board[i][j].dosentMoove = false;
+        }
+        if (board[i][j]instanceof Solger && ((i - x) == 2 || (i - x) == -2)) {
+            board[i][j].solgerTwoBoxMoove = true;
         }
         board[x][y] = board[i][j];
+        if (board[i][j]instanceof King && (y - j == 2)) {
+            board[i][j + 1] = board[i][j + 3];
+            board[i][j + 3] = new Tile();
+        }
+        if (board[x][y]instanceof Solger && board[x + 1][y].solgerTwoBoxMoove && j != y) {
+            board[x + 1][y] = new Tile();
+        }
+        if (board[x][y]instanceof Solger && board[x - 1][y].solgerTwoBoxMoove && j != y) {
+            board[x - 1][y] = new Tile();
+        }
         board[i][j] = new Tile();
     }
 
-    public void calculatePosibleMooves() {
+    public void calculatePosibleMooves(boolean whooseTurnIs) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                if (board[i][j].isFigure) {
+                if (board[i][j].isFigure && board[i][j].isWhite == whooseTurnIs) {
                     board[i][j].calculatePosibleMoove(i,j,board);
                 }
             }
@@ -134,6 +148,19 @@ public class PlayChess {
         return false;
     }
 
+    private void kingIsMooving (int i,int j,int x,int y) {
+        if(i == whiteKingI && j == whiteKingJ){
+            board[i][j].dosentMoove = false;
+            this.whiteKingI = x;
+            this.whiteKingJ = y;
+        }
+        if (i == blackKingI && j == blackKingJ){
+            board[i][j].dosentMoove = false;
+            this.blackKingI = x;
+            this.blackKingJ = y;
+        }
+    }
+
     public boolean tileIsAnderAttak(boolean isWhite,int x,int y) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -150,11 +177,21 @@ public class PlayChess {
     }
 
     public void clearPosibleMoove() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 if (board[i][j].isFigure) {
                     board[i][j].posibleMooves = new PosibleMoove();
                     board[i][j].underProtection = false;
+                }
+            }
+        }
+    }
+
+    public void clearOtherParametrs(boolean whooseTurnIs) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].isFigure && board[i][j].isWhite == whooseTurnIs) {
+                    board[i][j].solgerTwoBoxMoove = false;
                 }
             }
         }

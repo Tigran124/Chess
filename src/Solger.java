@@ -7,6 +7,7 @@ public class Solger extends ChessFigures{
         isFigure = true;
         this.isWhite = isWhite;
         underProtection = false;
+        solgerTwoBoxMoove = false;
         posibleMooves = new PosibleMoove();
     }
 
@@ -60,6 +61,18 @@ public class Solger extends ChessFigures{
                 posibleMooves.newPosibleMoove(index, i + 1,j - 1);
                 index++;
             }
+            if (isOnBoard(i,j + 1) && isOponentFigure(isWhite,i,j + 1,board)) {
+                if (board[i][j + 1].solgerTwoBoxMoove) {
+                    posibleMooves.newPosibleMoove(index, i + 1,j + 1);
+                    index++;
+                }
+            }
+            if (isOnBoard(i,j - 1) && isOponentFigure(isWhite,i,j - 1,board)) {
+                if (board[i][j - 1].solgerTwoBoxMoove) {
+                    posibleMooves.newPosibleMoove(index, i + 1,j - 1);
+                    index++;
+                }
+            }
             if (!board[i + 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i + 1, j);
                 index++;
@@ -77,6 +90,18 @@ public class Solger extends ChessFigures{
             if (isOnBoard(i - 1,j - 1) && isOponentFigure(isWhite,i - 1,j - 1,board)) {
                 posibleMooves.newPosibleMoove(index, i - 1,j - 1);
                 index++;
+            }
+            if (isOnBoard(i,j + 1) && isOponentFigure(isWhite,i,j + 1,board)) {
+                if (board[i][j + 1].solgerTwoBoxMoove) {
+                    posibleMooves.newPosibleMoove(index, i - 1,j + 1);
+                    index++;
+                }
+            }
+            if (isOnBoard(i,j - 1) && isOponentFigure(isWhite,i,j - 1,board)) {
+                if (board[i][j - 1].solgerTwoBoxMoove) {
+                    posibleMooves.newPosibleMoove(index, i - 1,j - 1);
+                    index++;
+                }
             }
             if (!board[i - 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i - 1, j);
