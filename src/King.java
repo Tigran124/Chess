@@ -132,9 +132,17 @@ public class King extends ChessFigures{
                     index++;
                 }
             }
-        }if (isOnBoard(i,j+3)) {
+        }
+        if (dosentMoove) {
             if (castleRight(isWhite, i, j, board)) {
                 posibleMooves.newPosibleMoove(index, i, j + 2);
+                index++;
+            }
+        }
+        if (dosentMoove) {
+            if (castleLeft(isWhite, i, j, board)) {
+                posibleMooves.newPosibleMoove(index, i, j - 2);
+                index++;
             }
         }
         this.posibleMooveCount = index;
@@ -196,12 +204,23 @@ public class King extends ChessFigures{
     }
 
     private boolean castleRight(boolean isWhite,int i,int j,ChessFigures[][] board) {
-        if (dosentMoove && board[i][j+3].dosentMoove) {
-            if (!tileIsAnderAttak(isWhite,i,j,board) && !board[i][j + 1].isFigure && !board[i][j + 1].isFigure) {
+        if (board[i][j+3].dosentMoove) {
+            if (!tileIsAnderAttak(isWhite,i,j,board) && !board[i][j + 1].isFigure && !board[i][j + 2].isFigure) {
                 if (!tileIsAnderAttak(isWhite,i,j + 1,board) && !tileIsAnderAttak(isWhite,i,j + 2,board)) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
 
+
+    private boolean castleLeft(boolean isWhite,int i,int j,ChessFigures[][] board) {
+        if (board[i][j-4].dosentMoove) {
+            if (!tileIsAnderAttak(isWhite,i,j,board) && !board[i][j - 1].isFigure && !board[i][j - 2].isFigure && !board[i][j - 3].isFigure) {
+                if (!tileIsAnderAttak(isWhite,i,j - 1,board) && !tileIsAnderAttak(isWhite,i,j - 2,board)) {
+                    return true;
+                }
             }
         }
         return false;

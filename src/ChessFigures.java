@@ -4,6 +4,7 @@ public abstract class ChessFigures {
      boolean underProtection;
      boolean isFigure;
      boolean isWhite;
+     boolean atakingKing;
      boolean solgerTwoBoxMoove;
      boolean dosentMoove;
      int posibleMooveCount;

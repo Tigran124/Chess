@@ -7,6 +7,7 @@ public class Knight extends ChessFigures{
         isFigure = true;
         this.isWhite = isWhite;
         underProtection = false;
+        atakingKing = false;
         posibleMooves = new PosibleMoove();
     }
     @Override

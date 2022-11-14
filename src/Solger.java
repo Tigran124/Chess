@@ -7,6 +7,7 @@ public class Solger extends ChessFigures{
         isFigure = true;
         this.isWhite = isWhite;
         underProtection = false;
+        atakingKing = false;
         solgerTwoBoxMoove = false;
         posibleMooves = new PosibleMoove();
     }
@@ -76,9 +77,11 @@ public class Solger extends ChessFigures{
             if (!board[i + 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i + 1, j);
                 index++;
-                if (!board[i + 2][j].isFigure && i == 1) {
-                    posibleMooves.newPosibleMoove(index, i + 2, j);
-                    index++;
+                if (i == 1) {
+                    if (!board[i + 2][j].isFigure) {
+                        posibleMooves.newPosibleMoove(index, i + 2, j);
+                        index++;
+                    }
                 }
             }
             this.posibleMooveCount = index;
@@ -106,9 +109,11 @@ public class Solger extends ChessFigures{
             if (!board[i - 1][j].isFigure) {
                 posibleMooves.newPosibleMoove(index, i - 1, j);
                 index++;
-                if (!board[i - 2][j].isFigure && i == 6) {
-                    posibleMooves.newPosibleMoove(index, i - 2, j);
-                    index++;
+                if (i == 6) {
+                    if (!board[i - 2][j].isFigure) {
+                        posibleMooves.newPosibleMoove(index, i - 2, j);
+                        index++;
+                    }
                 }
             }
             this.posibleMooveCount = index;

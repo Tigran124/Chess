@@ -17,9 +17,9 @@ public class PosibleMoove {
         this.cordinatesJ[index] = j;
     }
 
-    public boolean isPosible(int i,int j){
+    public boolean isPosible(int i,int j,int moveCount){
         boolean isPosible = false;
-        for (int k = 0; k < cordinatesI.length; k++) {
+        for (int k = 0; k < moveCount; k++) {
             if(cordinatesI[k] == null) {
                 break;
             }
@@ -29,6 +29,87 @@ public class PosibleMoove {
             }
         }
         return isPosible;
+    }
+
+    public void isOnTheLine(int myI,int myJ,int atakerI,int atakerJ,int moveCount,ChessFigures[][] board) {
+        for (int i = 0; i < moveCount; i++) {
+            if (cordinatesI[i] == atakerI ^ cordinatesJ[i] ==atakerJ) {
+                removeMove(i,moveCount);
+                board[myI][myJ].posibleMooveCount -= 1;
+                moveCount --;
+                i --;
+            }
+        }
+    }
+
+    public void isOnParalel(int myI,int myJ,int atakerI,int atakerJ,int moveCount,ChessFigures[][] board) {
+        for (int i = 0; i < moveCount; i++) {
+            if (onParalel(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ)) {
+                removeMove(i,moveCount);
+                board[myI][myJ].posibleMooveCount -= 1;
+                moveCount --;
+                i --;
+            }
+        }
+    }
+
+    public boolean onParalel(int cordI,int cordJ,int atakerI,int atakerJ) {
+        int subtractionI = cordI - atakerI;
+        int subtractionJ = cordJ - atakerJ;
+        if (subtractionI == 0 && subtractionJ == 0){
+            return false;
+        }
+        subtractionI = Math.abs(subtractionI);
+        subtractionJ = Math.abs(subtractionJ);
+        return subtractionI == subtractionJ;
+    }
+
+    public int calculateRescueMove (boolean attakLine,boolean attakParalel,int atakerI,int atakerJ,int kingsI,int kingsJ,int moveCount) {
+        PosibleMoove rescueMove = new PosibleMoove();
+        int rescueMoveCount = 0;
+        for (int i = 0; i < moveCount; i++) {
+            if (cordinatesI[i] == atakerI && cordinatesJ[i] == atakerJ) {
+                rescueMove.cordinatesI[rescueMoveCount] = cordinatesI[i];
+                rescueMove.cordinatesJ[rescueMoveCount] = cordinatesJ[i];
+                rescueMoveCount ++;
+                continue;
+            }
+            if (attakLine) {
+                if (atakerI == kingsI && atakerI == cordinatesI[i]) {
+                    rescueMove.cordinatesI[rescueMoveCount] = cordinatesI[i];
+                    rescueMove.cordinatesJ[rescueMoveCount] = cordinatesJ[i];
+                    rescueMoveCount ++;
+                    continue;
+                }
+                if (atakerJ == kingsJ && atakerJ == cordinatesJ[i]) {
+                    rescueMove.cordinatesI[rescueMoveCount] = cordinatesI[i];
+                    rescueMove.cordinatesJ[rescueMoveCount] = cordinatesJ[i];
+                    rescueMoveCount ++;
+                    continue;
+                }
+            }
+            if (attakParalel) {
+                if (onParalel(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ) && onParalel(cordinatesI[i],cordinatesJ[i],kingsI,kingsJ)){
+                    if (cordinatesI[i] < Math.max(atakerI,kingsI) && cordinatesI[i] > Math.min(atakerI,kingsI)) {
+                        if (cordinatesJ[i] < Math.max(atakerJ,kingsJ) && cordinatesJ[i] > Math.min(atakerJ,kingsJ)) {
+                            rescueMove.cordinatesI[rescueMoveCount] = cordinatesI[i];
+                            rescueMove.cordinatesJ[rescueMoveCount] = cordinatesJ[i];
+                            rescueMoveCount++;
+                        }
+                    }
+                }
+            }
+        }
+        this.cordinatesI = rescueMove.cordinatesI;
+        this.cordinatesJ = rescueMove.cordinatesJ;
+        return rescueMoveCount;
+    }
+
+    public void removeMove(int removeIndex,int moveCount) {
+        for (int i = removeIndex; i < moveCount-1; i++) {
+            cordinatesI[i] = cordinatesI[i + 1];
+            cordinatesJ[i] = cordinatesJ[i + 1];
+        }
     }
 
     public void enlargeArrey (Integer[] cordinatesI,Integer[] cordinatesJ) {
