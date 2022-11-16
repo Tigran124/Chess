@@ -27,13 +27,16 @@ public class PlayChess {
                     }
                     break;
                 }
+                printRescureMoves();
             }
             System.out.println("chose figure");
             int i = isValid(scanner.nextInt());
             int j = isValid(scanner.nextInt());
-            while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure) {
+            while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure || board[i][j].posibleMooveCount == 0) {
                 if (!board[i][j].isFigure) {
                     System.out.println("there are no figure");
+                }else if (board[i][j].posibleMooveCount == 0) {
+                    System.out.println("These figure can not move");
                 }else {
                     System.out.println("it is opponents figure");
                 }
@@ -90,6 +93,20 @@ public class PlayChess {
         for (int i = 7; i >= 0; i--) {
             for (int j = 0; j < 8; j++) {
                 if(board[x][y].posibleMooves.isPosible(i,j,board[x][y].posibleMooveCount) || (x == i && y == j)){
+                    board[i][j].printeChoosen(whooseTurnIs);
+                }else {
+                    board[i][j].printe(whooseTurnIs);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+
+    public void printRescureMoves() {
+        for (int i = 7; i >= 0; i--) {
+            for (int j = 0; j < 8; j++) {
+                if(board[i][j].posibleMooveCount != 0 && board[i][j].isWhite == whooseTurnIs){
                     board[i][j].printeChoosen(whooseTurnIs);
                 }else {
                     board[i][j].printe(whooseTurnIs);
@@ -229,6 +246,9 @@ public class PlayChess {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (board[i][j].isWhite == whooseTurnIs && board[i][j].isFigure) {
+                        if (board[i][j]instanceof King){
+                            continue;
+                        }
                         boolean attakLine = board[atakerI][atakerJ]instanceof Rook || board[atakerI][atakerJ]instanceof Queen;
                         boolean attakParalel = board[atakerI][atakerJ]instanceof Bishop || board[atakerI][atakerJ]instanceof Queen;
                         board[i][j].posibleMooveCount = board[i][j].posibleMooves.calculateRescueMove(attakLine,attakParalel,atakerI,atakerJ,kingsI,kingsJ,board[i][j].posibleMooveCount);
@@ -239,6 +259,9 @@ public class PlayChess {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (board[i][j].isWhite == whooseTurnIs && board[i][j].isFigure) {
+                        if (board[i][j]instanceof King){
+                            continue;
+                        }
                         board[i][j].posibleMooveCount = 0;
                     }
                 }
