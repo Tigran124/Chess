@@ -111,12 +111,12 @@ public class PlayChess {
     }
 
     public void toChooseFigure(int i,int j) {
-        System.out.println("chose figure");
+        System.out.println("Chose figure");
         i = isValid(scanner.nextInt());
         j = isValid(scanner.nextInt());
         while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure || board[i][j].posibleMooveCount == 0) {
             if (!board[i][j].isFigure) {
-                System.out.println("there are no figure");
+                System.out.println("There are no figure");
                 i = isValid(scanner.nextInt());
                 j = isValid(scanner.nextInt());
             } else if (board[i][j].posibleMooveCount == 0) {
@@ -124,7 +124,7 @@ public class PlayChess {
                 i = isValid(scanner.nextInt());
                 j = isValid(scanner.nextInt());
             } else if (board[i][j].isWhite != whooseTurnIs) {
-                System.out.println("it is opponents figure");
+                System.out.println("It is opponents figure");
                 i = isValid(scanner.nextInt());
                 j = isValid(scanner.nextInt());
             }
