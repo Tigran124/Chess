@@ -7,6 +7,10 @@ public class PlayChess {
     int whiteKingJ = 4;
     int blackKingI = 7;
     int blackKingJ = 4;
+    int i;
+    int j;
+    int x;
+    int y;
     Scanner scanner = new Scanner(System.in);
     ChessFigures [][] board = new  ChessFigures [8][8];
     public void play() {
@@ -20,67 +24,58 @@ public class PlayChess {
             if (check(whooseTurnIs)) {
                 rescueKing(whooseTurnIs);
                 if (mate()) {
-                    if (whooseTurnIs) {
-                        System.out.println("White loose");
-                    }else {
-                        System.out.println("Black loose");
-                    }
+                    whoWins();
                     break;
                 }
                 printRescureMoves();
-            }
-            System.out.println("chose figure");
-            int i = isValid(scanner.nextInt());
-            int j = isValid(scanner.nextInt());
-            while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure || board[i][j].posibleMooveCount == 0) {
-                if (!board[i][j].isFigure) {
-                    System.out.println("there are no figure");
-                }else if (board[i][j].posibleMooveCount == 0) {
-                    System.out.println("These figure can not move");
-                }else {
-                    System.out.println("it is opponents figure");
-                }
-                i = isValid(scanner.nextInt());
-                j = isValid(scanner.nextInt());
+            }else if (draw()) {
+                System.out.println("Drown");
+                break;
             }
             toChooseFigure(i,j);
-            System.out.println("where to move");
-            int x = isValid(scanner.nextInt());
-            int y = isValid(scanner.nextInt());
-            while (!board[i][j].posibleMooves.isPosible(x,y,board[i][j].posibleMooveCount)) {
-                System.out.println("you can not moove there");
-                x = isValid(scanner.nextInt());
-                y = isValid(scanner.nextInt());
-            }
+            whereToMove(x,y);
             toMoove(i,j,x,y,board);
-            clearPosibleMoove();
-            calculateOpinentPosibleMooves(!whooseTurnIs);
-            if (check(whooseTurnIs)) {
-                if (whooseTurnIs) {
-                    System.out.println("White loose");
-                }else {
-                    System.out.println("Black loose");
-                }
-                this.gameContinue = false;
-            }
             clearPosibleMoove();
             clearOtherParametrs(!whooseTurnIs);
             turn ++;
         }
     }
     public void fullBoard() {
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < 8; i++) {
             for (int j = 0; j < board.length; j++) {
                 board[i][j] = new Tile();
             }
         }
+        for (int k = 0; k < 8; k++) {
+            board[1][k] = new Solger(true);
+        }
+        board[0][0] = new Rook(true);
+        board[0][1] = new Knight(true);
+        board[0][2] = new Bishop(true);
+        board[0][3] = new Queen(true);
         board[0][4] = new King(true);
-        board[0][0] = new Queen(true);
-        board[0][1] = new Queen(true);
+        board[0][5] = new Bishop(true);
+        board[0][6] = new Knight(true);
+        board[0][7] = new Rook(true);
+        for (int k = 0; k < 8; k++) {
+            board[6][k] = new Solger(false);
+        }
+        board[7][0] = new Rook(false);
+        board[7][1] = new Knight(false);
+        board[7][2] = new Bishop(false);
+        board[7][3] = new Queen(false);
         board[7][4] = new King(false);
+        board[7][5] = new Bishop(false);
+        board[7][6] = new Knight(false);
+        board[7][7] = new Rook(false);
     }
 
     public void printBoard(boolean whooseTurnIs) {
+        if (whooseTurnIs) {
+            System.out.println("White turn");
+        }else {
+            System.out.println("Black turn");
+        }
         for (int i = 7; i >=0; i--) {
             for (int j = 0; j < 8; j++) {
                 board[i][j].printe(whooseTurnIs);
@@ -102,7 +97,6 @@ public class PlayChess {
         }
     }
 
-
     public void printRescureMoves() {
         for (int i = 7; i >= 0; i--) {
             for (int j = 0; j < 8; j++) {
@@ -117,7 +111,47 @@ public class PlayChess {
     }
 
     public void toChooseFigure(int i,int j) {
+        System.out.println("chose figure");
+        i = isValid(scanner.nextInt());
+        j = isValid(scanner.nextInt());
+        while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure || board[i][j].posibleMooveCount == 0) {
+            if (!board[i][j].isFigure) {
+                System.out.println("there are no figure");
+                i = isValid(scanner.nextInt());
+                j = isValid(scanner.nextInt());
+            } else if (board[i][j].posibleMooveCount == 0) {
+                System.out.println("These figure can not move");
+                i = isValid(scanner.nextInt());
+                j = isValid(scanner.nextInt());
+            } else if (board[i][j].isWhite != whooseTurnIs) {
+                System.out.println("it is opponents figure");
+                i = isValid(scanner.nextInt());
+                j = isValid(scanner.nextInt());
+            }
+        }
+        this.i = i;
+        this.j = j;
         printChoosen(i, j,whooseTurnIs);
+    }
+
+    public void whereToMove (int x,int y) {
+        System.out.println("Where to move");
+        x = isValid(scanner.nextInt());
+        y = isValid(scanner.nextInt());
+        while (!board[i][j].posibleMooves.isPosible(x,y,board[i][j].posibleMooveCount)) {
+            System.out.println("You can not move there");
+            System.out.println("If you want to move other figure input 10");
+            x = scanner.nextInt();
+            if (x == 10) {
+                toChooseFigure(i,j);
+            }
+            if (!(x >= 0 && x<=7)) {
+                x = isValid(scanner.nextInt());
+            }
+            y = isValid(scanner.nextInt());
+        }
+        this.x = x;
+        this.y = y;
     }
 
     public void toMoove(int i,int j,int x,int y,ChessFigures[][] board) {
@@ -177,10 +211,141 @@ public class PlayChess {
                 }
             }
         }
+        clearImposibleMove();
     }
 
+    public void clearImposibleMove() {
+        int kingsI;
+        int kingsJ;
+        int protectorI = 0;
+        int protectorJ = 0;
+        if(whooseTurnIs){
+            kingsI = whiteKingI;
+            kingsJ = whiteKingJ;
+        }else {
+            kingsI = blackKingI;
+            kingsJ = blackKingJ;
+        }
+        for (int k = 1,protectorCount = 0; kingsI + k < 8 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI + k,kingsJ)) {
+                protectorI = kingsI + k;
+                protectorJ = kingsJ;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI + k,kingsJ)) {
+                if (protectorCount == 1 && (board[kingsI + k][kingsJ]instanceof Queen || board[kingsI + k][kingsJ]instanceof Rook)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnLine(kingsI + k,kingsJ,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;k < 8 && kingsI - k >= 0 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI - k,kingsJ)) {
+                protectorI = kingsI - k;
+                protectorJ = kingsJ;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI - k,kingsJ)) {
+                if (protectorCount == 1 && (board[kingsI - k][kingsJ]instanceof Queen || board[kingsI - k][kingsJ]instanceof Rook)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnLine(kingsI - k,kingsJ,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0; kingsJ + k < 8 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI,kingsJ + k)) {
+                protectorI = kingsI;
+                protectorJ = kingsJ + k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI,kingsJ + k)) {
+                if (protectorCount == 1 && (board[kingsI][kingsJ + k]instanceof Queen || board[kingsI][kingsJ + k]instanceof Rook)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnLine(kingsI,kingsJ + k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;k < 8 && kingsJ - k >= 0 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI,kingsJ - k)) {
+                protectorI = kingsI;
+                protectorJ = kingsJ - k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI,kingsJ - k)) {
+                if (protectorCount == 1 && (board[kingsI][kingsJ - k]instanceof Queen || board[kingsI][kingsJ - k]instanceof Rook)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnLine(kingsI,kingsJ - k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;kingsI + k < 8 && kingsJ + k < 8 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI + k,kingsJ + k)) {
+                protectorI = kingsI + k;
+                protectorJ = kingsJ + k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI + k,kingsJ + k)) {
+                if (protectorCount == 1 && (board[kingsI + k][kingsJ + k]instanceof Queen || board[kingsI + k][kingsJ + k]instanceof Bishop)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnDiaganal(kingsI + k,kingsJ + k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;kingsI + k < 8 && kingsJ - k >= 0 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI + k,kingsJ - k)) {
+                protectorI = kingsI + k;
+                protectorJ = kingsJ - k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI + k,kingsJ - k)) {
+                if (protectorCount == 1 && (board[kingsI + k][kingsJ - k]instanceof Queen || board[kingsI + k][kingsJ - k]instanceof Bishop)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnDiaganal(kingsI + k,kingsJ - k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;kingsI - k >= 0 && kingsJ + k < 8 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI - k,kingsJ + k)) {
+                protectorI = kingsI - k;
+                protectorJ = kingsJ + k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI - k,kingsJ + k)) {
+                if (protectorCount == 1 && (board[kingsI - k][kingsJ + k]instanceof Queen || board[kingsI - k][kingsJ + k]instanceof Bishop)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnDiaganal(kingsI - k,kingsJ + k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+        for (int k = 1,protectorCount = 0;kingsI - k >= 0 && kingsJ - k >= 0 && protectorCount < 2; k++) {
+            if (isFrendlyFigure(kingsI - k,kingsJ - k)) {
+                protectorI = kingsI - k;
+                protectorJ = kingsJ - k;
+                protectorCount ++;
+            } else if (isOponentFigure(kingsI - k,kingsJ - k)) {
+                if (protectorCount == 1 && (board[kingsI - k][kingsJ - k]instanceof Queen || board[kingsI - k][kingsJ - k]instanceof Bishop)) {
+                    board[protectorI][protectorJ].posibleMooveCount = board[protectorI][protectorJ].posibleMooves.removeImposibleMoveOnDiaganal(kingsI - k,kingsJ - k,kingsI,kingsJ,board[protectorI][protectorJ].posibleMooveCount);
+                }else {
+                    break;
+                }
+            }
+        }
+    }
 
-    public boolean check(boolean isWhite) {
+    public boolean draw() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].isWhite == whooseTurnIs && board[i][j].isFigure) {
+                    if (board[i][j].posibleMooveCount != 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean check(boolean isWhite)   {
         if (isWhite){
             if(tileIsAnderAttak(isWhite,whiteKingI,whiteKingJ)) {
                 System.out.println("White King is ander attak");
@@ -195,7 +360,6 @@ public class PlayChess {
         return false;
     }
 
-
     public boolean mate() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -209,6 +373,13 @@ public class PlayChess {
         return true;
     }
 
+    public void whoWins() {
+        if (whooseTurnIs) {
+            System.out.println("Black wins");
+        }else {
+            System.out.println("White wins");
+        }
+    }
 
     private void rescueKing(boolean whooseTurnIs) {
         int countOfAtakers = 0;
@@ -237,7 +408,7 @@ public class PlayChess {
                 board[kingsI][kingsJ].posibleMooves.isOnTheLine(kingsI,kingsJ,atakerI,atakerJ,board[kingsI][kingsJ].posibleMooveCount,board);
             }
             if (board[atakerI][atakerJ]instanceof Bishop || board[atakerI][atakerJ]instanceof Queen) {
-                board[kingsI][kingsJ].posibleMooves.isOnParalel(kingsI,kingsJ,atakerI,atakerJ,board[kingsI][kingsJ].posibleMooveCount,board);
+                board[kingsI][kingsJ].posibleMooves.isOnDiaganal(kingsI,kingsJ,atakerI,atakerJ,board[kingsI][kingsJ].posibleMooveCount,board);
             }
         }
         if(countOfAtakers == 1) {
@@ -321,7 +492,6 @@ public class PlayChess {
         }
     }
 
-
     private void promoteSolger (boolean isWhite,int i,int j) {
         System.out.println("Upgrade to what 1) Queen 2)Bishop 3)Knight 4)Rook");
         int index = scanner.nextInt();
@@ -337,6 +507,22 @@ public class PlayChess {
         }
     }
 
+    private boolean isFrendlyFigure(int i,int j) {
+        if (board[i][j].isFigure){
+            return whooseTurnIs == board[i][j].isWhite;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean isOponentFigure(int i, int j) {
+        if (board[i][j].isFigure){
+            return whooseTurnIs != board[i][j].isWhite;
+        }else {
+            return false;
+        }
+    }
+
     public int isValid (int cordinate) {
         while (!(cordinate < 8 && cordinate >= 0)) {
             System.out.println("wrong cordinate");
@@ -344,7 +530,6 @@ public class PlayChess {
         }
         return cordinate;
     }
-
 
     private boolean isOnBoard(int i,int j){
         return (i <= 7 && i >= 0) && (j <= 7 && j >= 0);

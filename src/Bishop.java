@@ -13,7 +13,7 @@ public class Bishop extends ChessFigures{
     @Override
     public void calculatePosibleMoove(int i, int j, ChessFigures[][] board) {
         int index = 0;
-        for (int k = 1; i + k < board.length && j + k < board.length; k++) {
+        for (int k = 1; i + k < 8 && j + k < 8; k++) {
             if (!board[i + k][j + k].isFigure) {
                 posibleMooves.newPosibleMoove(index, i + k, j + k);
                 index++;
@@ -28,7 +28,7 @@ public class Bishop extends ChessFigures{
                 break;
             }
         }
-        for (int k = 1; i + k < board.length && j - k >= 0; k++) {
+        for (int k = 1; i + k < 8 && j - k >= 0; k++) {
             if (!board[i + k][j - k].isFigure) {
                 posibleMooves.newPosibleMoove(index, i + k, j - k);
                 index++;
@@ -43,7 +43,7 @@ public class Bishop extends ChessFigures{
                 break;
             }
         }
-        for (int k = 1; i - k >= 0 && j + k < board.length; k++) {
+        for (int k = 1; i - k >= 0 && j + k < 8; k++) {
             if (!board[i - k][j + k].isFigure) {
                 posibleMooves.newPosibleMoove(index, i - k, j + k);
                 index++;

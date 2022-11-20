@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class PosibleMoove {
     Integer[] cordinatesI;
     Integer[] cordinatesJ;
@@ -42,9 +40,9 @@ public class PosibleMoove {
         }
     }
 
-    public void isOnParalel(int myI,int myJ,int atakerI,int atakerJ,int moveCount,ChessFigures[][] board) {
+    public void isOnDiaganal(int myI, int myJ, int atakerI, int atakerJ, int moveCount, ChessFigures[][] board) {
         for (int i = 0; i < moveCount; i++) {
-            if (onParalel(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ)) {
+            if (onDiaganal(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ)) {
                 removeMove(i,moveCount);
                 board[myI][myJ].posibleMooveCount -= 1;
                 moveCount --;
@@ -53,7 +51,7 @@ public class PosibleMoove {
         }
     }
 
-    public boolean onParalel(int cordI,int cordJ,int atakerI,int atakerJ) {
+    public boolean onDiaganal(int cordI, int cordJ, int atakerI, int atakerJ) {
         int subtractionI = cordI - atakerI;
         int subtractionJ = cordJ - atakerJ;
         if (subtractionI == 0 && subtractionJ == 0){
@@ -62,6 +60,47 @@ public class PosibleMoove {
         subtractionI = Math.abs(subtractionI);
         subtractionJ = Math.abs(subtractionJ);
         return subtractionI == subtractionJ;
+    }
+
+    public int removeImposibleMoveOnLine(int atakerI,int atakerJ,int kingsI,int kingsJ,int moveCount) {
+        PosibleMoove tempPosibleMove = new PosibleMoove();
+        int posibleMoveCount = 0;
+        for (int i = 0; i < moveCount; i++) {
+            if (atakerI == kingsI && atakerI == cordinatesI[i]) {
+                tempPosibleMove.cordinatesI[posibleMoveCount] = cordinatesI[i];
+                tempPosibleMove.cordinatesJ[posibleMoveCount] = cordinatesJ[i];
+                posibleMoveCount++;
+                continue;
+            }
+            if (atakerJ == kingsJ && atakerJ == cordinatesJ[i]) {
+                tempPosibleMove.cordinatesI[posibleMoveCount] = cordinatesI[i];
+                tempPosibleMove.cordinatesJ[posibleMoveCount] = cordinatesJ[i];
+                posibleMoveCount++;
+            }
+        }
+        this.cordinatesI = tempPosibleMove.cordinatesI;
+        this.cordinatesJ = tempPosibleMove.cordinatesJ;
+        return posibleMoveCount;
+    }
+
+    public int removeImposibleMoveOnDiaganal(int atakerI,int atakerJ,int kingsI,int kingsJ,int moveCount) {
+        PosibleMoove tempPosibleMove = new PosibleMoove();
+        int posibleMoveCount = 0;
+        for (int i = 0; i < moveCount; i++) {
+            if (onDiaganal(cordinatesI[i], cordinatesJ[i], atakerI, atakerJ) && onDiaganal(cordinatesI[i], cordinatesJ[i], kingsI, kingsJ)) {
+                tempPosibleMove.cordinatesI[posibleMoveCount] = cordinatesI[i];
+                tempPosibleMove.cordinatesJ[posibleMoveCount] = cordinatesJ[i];
+                posibleMoveCount++;
+            }
+            if (cordinatesI[i] == atakerI && cordinatesJ[i] == atakerJ) {
+                tempPosibleMove.cordinatesI[posibleMoveCount] = cordinatesI[i];
+                tempPosibleMove.cordinatesJ[posibleMoveCount] = cordinatesJ[i];
+                posibleMoveCount++;
+            }
+        }
+        this.cordinatesI = tempPosibleMove.cordinatesI;
+        this.cordinatesJ = tempPosibleMove.cordinatesJ;
+        return posibleMoveCount;
     }
 
     public int calculateRescueMove (boolean attakLine,boolean attakParalel,int atakerI,int atakerJ,int kingsI,int kingsJ,int moveCount) {
@@ -89,7 +128,7 @@ public class PosibleMoove {
                 }
             }
             if (attakParalel) {
-                if (onParalel(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ) && onParalel(cordinatesI[i],cordinatesJ[i],kingsI,kingsJ)){
+                if (onDiaganal(cordinatesI[i],cordinatesJ[i],atakerI,atakerJ) && onDiaganal(cordinatesI[i],cordinatesJ[i],kingsI,kingsJ)){
                     if (cordinatesI[i] < Math.max(atakerI,kingsI) && cordinatesI[i] > Math.min(atakerI,kingsI)) {
                         if (cordinatesJ[i] < Math.max(atakerJ,kingsJ) && cordinatesJ[i] > Math.min(atakerJ,kingsJ)) {
                             rescueMove.cordinatesI[rescueMoveCount] = cordinatesI[i];
