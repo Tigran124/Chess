@@ -14,7 +14,7 @@ public abstract class ChessFigures {
 
      public abstract void calculatePosibleMoove(int i,int j,ChessFigures[][] board);
 
-     public void calculatePosibleMooveForSolger(int i,int j,ChessFigures[][] board){
+     public void calculatePosibleMooveForSolider(int i, int j, ChessFigures[][] board){
      }
 
      public abstract boolean isOponentFigure(boolean isWhite,int i,int j,ChessFigures[][] board);

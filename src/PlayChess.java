@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class PlayChess {
@@ -112,21 +113,25 @@ public class PlayChess {
 
     public void toChooseFigure(int i,int j) {
         System.out.println("Chose figure");
-        i = isValid(scanner.nextInt());
-        j = isValid(scanner.nextInt());
+        String coordinates = isValidInput(scanner.nextLine());
+        i = coordinates.charAt(0) - 97;
+        j = coordinates.charAt(1) - 49;
         while (!board[i][j].isWhite == whooseTurnIs || !board[i][j].isFigure || board[i][j].posibleMooveCount == 0) {
             if (!board[i][j].isFigure) {
                 System.out.println("There are no figure");
-                i = isValid(scanner.nextInt());
-                j = isValid(scanner.nextInt());
+                coordinates = isValidInput(scanner.nextLine());
+                i = coordinates.charAt(0) - 97;
+                j = coordinates.charAt(1) - 49;
             } else if (board[i][j].posibleMooveCount == 0) {
                 System.out.println("These figure can not move");
-                i = isValid(scanner.nextInt());
-                j = isValid(scanner.nextInt());
+                coordinates = isValidInput(scanner.nextLine());
+                i = coordinates.charAt(0) - 97;
+                j = coordinates.charAt(1) - 49;
             } else if (board[i][j].isWhite != whooseTurnIs) {
                 System.out.println("It is opponents figure");
-                i = isValid(scanner.nextInt());
-                j = isValid(scanner.nextInt());
+                coordinates = isValidInput(scanner.nextLine());
+                i = coordinates.charAt(0) - 97;
+                j = coordinates.charAt(1) - 49;
             }
         }
         this.i = i;
@@ -136,19 +141,21 @@ public class PlayChess {
 
     public void whereToMove (int x,int y) {
         System.out.println("Where to move");
-        x = isValid(scanner.nextInt());
-        y = isValid(scanner.nextInt());
+        String coordinates = isValidInput(scanner.nextLine());
+        x = coordinates.charAt(0) - 97;
+        y = coordinates.charAt(1) - 49;
         while (!board[i][j].posibleMooves.isPosible(x,y,board[i][j].posibleMooveCount)) {
             System.out.println("You can not move there");
-            System.out.println("If you want to move other figure input 10");
-            x = scanner.nextInt();
-            if (x == 10) {
-                toChooseFigure(i,j);
-            }
-            if (!(x >= 0 && x<=7)) {
-                x = isValid(scanner.nextInt());
-            }
-            y = isValid(scanner.nextInt());
+            System.out.println("If you want to move other figure input yes");
+            coordinates = scanner.nextLine();
+            try {
+                if (Objects.equals(coordinates, "yes")) {
+                    toChooseFigure(i, j);
+                }
+            }catch (NumberFormatException ignored){}
+            coordinates = isValidInput(coordinates);
+            x = coordinates.charAt(0) - 97;
+            y = coordinates.charAt(1) - 49;
         }
         this.x = x;
         this.y = y;
@@ -204,7 +211,7 @@ public class PlayChess {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j].isFigure && board[i][j].isWhite == whooseTurnIs) {
                     if(board[i][j]instanceof Solger){
-                        board[i][j].calculatePosibleMooveForSolger(i, j, board);
+                        board[i][j].calculatePosibleMooveForSolider(i, j, board);
                     }else {
                         board[i][j].calculatePosibleMoove(i, j, board);
                     }
@@ -523,12 +530,16 @@ public class PlayChess {
         }
     }
 
-    public int isValid (int cordinate) {
-        while (!(cordinate < 8 && cordinate >= 0)) {
-            System.out.println("wrong cordinate");
-            cordinate = scanner.nextInt();
+    private String isValidInput (String coordinates) {
+        int corI = coordinates.charAt(0) - 97;
+        int corJ = coordinates.charAt(1) - 49;
+        while ((!(corI < 8 && corI >= 0) || !(corJ < 8 && corJ >= 0)) || coordinates.length() != 2) {
+            System.out.println("Wrong coordinate");
+            coordinates = scanner.nextLine();
+            corI = coordinates.charAt(0) - 97;
+            corJ = coordinates.charAt(1) - 49;
         }
-        return cordinate;
+        return coordinates;
     }
 
     private boolean isOnBoard(int i,int j){

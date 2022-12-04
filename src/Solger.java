@@ -51,7 +51,7 @@ public class Solger extends ChessFigures{
     }
 
     @Override
-    public void calculatePosibleMooveForSolger(int i,int j,ChessFigures[][] board) {
+    public void calculatePosibleMooveForSolider(int i, int j, ChessFigures[][] board) {
         int index = 0;
         if (isWhite) {
             if (isOnBoard(i + 1,j + 1) && isOponentFigure(isWhite,i + 1,j + 1,board)) {
